@@ -4,8 +4,8 @@
 import typing
 from typing import Any, Mapping, Coroutine
 import aiohttp
-from elasticsearch import AsyncElasticsearch
-from elastic_transport import ApiResponse, AsyncTransport
+from elasticsearch import AsyncElasticsearch, Transport
+from elastic_transport import ApiResponse
 
 from .utils import TYPE_HOST
 
@@ -16,7 +16,7 @@ class AsyncElasticsearchClient(AsyncElasticsearch):
     def __init__(
         self,
         hosts: TYPE_HOST,
-        transport_class: typing.Type[AsyncTransport],
+        transport_class: Transport,
         **kwargs
     ) -> None:
         super().__init__(

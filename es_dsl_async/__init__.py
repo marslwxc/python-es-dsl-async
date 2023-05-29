@@ -1,1 +1,1 @@
-from .connections import connections
+from .connections import AsyncElasticsearchClient
