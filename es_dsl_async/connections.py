@@ -35,16 +35,19 @@ class AsyncElasticsearchClient(AsyncElasticsearch):
         **kwargs
     ) -> typing.Any:
         async with aiohttp.ClientSession() as session:
-            async with session.request(
-                method=method,
-                url=url,
-                params=params,
-                json=body,
-                headers=headers,
-                **kwargs
-            ) as response:
-                response.raise_for_status()
-                return await response.json()
+            try:
+                async with session.request(
+                    method=method,
+                    url=url,
+                    params=params,
+                    json=body,
+                    headers=headers,
+                    **kwargs
+                ) as response:
+                    response.raise_for_status()
+                    return await response.json()
+            except aiohttp.ClientError as error:
+                raise ElasticsearchException(str(error))
 
     async def perform_request(self, method: str, path: str, *, params: Mapping[str, Any] | None = None, headers: Mapping[str, str] | None = None, body: Any | None = None) -> Coroutine[Any, Any, ApiResponse[Any]]:
         return await self._async_call(method, path, params=params, headers=headers, body=body)
