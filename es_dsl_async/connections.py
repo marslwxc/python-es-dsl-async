@@ -4,7 +4,7 @@
 import typing
 from typing import Any, Mapping, Coroutine
 import aiohttp
-from elasticsearch import AsyncElasticsearch, Transport
+from elasticsearch import AsyncElasticsearch, Transport, ElasticsearchException
 from elastic_transport import ApiResponse
 
 from .utils import TYPE_HOST
