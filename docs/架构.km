@@ -1,0 +1,124 @@
+{
+    "root": {
+        "data": {
+            "id": "ct621qjclfc0",
+            "created": 1686104178959,
+            "text": "MainTopic"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "ct621twz3a80",
+                    "created": 1686104186313,
+                    "text": "connections"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "ct6224zg2vs0",
+                            "created": 1686104210407,
+                            "text": "AsyncElasticsearchClient"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "ct62fwylve80",
+                            "created": 1686105290040,
+                            "text": "用来连接elasticsearch数据库的。在这个模块中创建一个异步的elasticsearch客户端，以便在查询和索引文档时使用"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "ct62g0o35wg0",
+                    "created": 1686105298111,
+                    "text": "document"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "ct62g5cuzeg0",
+                            "created": 1686105308317,
+                            "text": " 定义异步的Document类的。在这个模块中继承elasticsearch-dsl的Document类，并且为所有的字段定义异步的Field类"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "ct62gg71rgo0",
+                    "created": 1686105331910,
+                    "text": "field"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "ct62gjoceaw0",
+                            "created": 1686105339486,
+                            "text": "这个模块是用来定义异步的Field类的。在这个模块中继承elasticsearch-dsl的Field类，并且定义自己的异步方法，例如异步分析、查询和聚合方法"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "ct62gw0mdpc0",
+                    "created": 1686105366350,
+                    "text": "query"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "ct62gyr6vuw0",
+                            "created": 1686105372310,
+                            "text": "用来定义异步的查询语句的。在这个模块中需要定义异步的查询方法，例如异步的过滤器、范围、匹配和聚合方法"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "ct62hg7w1u80",
+                    "created": 1686105410325,
+                    "text": "aggregation"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "ct62hif9zvs0",
+                            "created": 1686105415125,
+                            "text": "这个模块是用来定义异步的聚合语句的。在这个模块中需要定义异步的聚合方法，例如异步的平均值、最大值、最小值和分组聚合方法"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "ct62hovvsp40",
+                    "created": 1686105429190,
+                    "text": "utils"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "ct62hqhz3mw0",
+                            "created": 1686105432702,
+                            "text": "这个模块是用来定义一些通用的异步方法的。例如，异步的分页方法、异步的排序方法和异步的索引方法"
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}

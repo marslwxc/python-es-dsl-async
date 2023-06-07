@@ -1,56 +1,68 @@
 """
-与Elasticsearch进行通信的相关类
+es数据库连接模块
 """
-import typing
-from typing import Any, Mapping, Coroutine
-import aiohttp
-from elasticsearch import AsyncElasticsearch, Transport, ElasticsearchException
-from elastic_transport import ApiResponse
-
-from .utils import TYPE_HOST
+import contextlib
+from elasticsearch import AsyncElasticsearch
+from elasticsearch_dsl.connections import Connections
+from elasticsearch_dsl.serializer import serializer
+from six import string_types
 
 
-class AsyncElasticsearchClient(AsyncElasticsearch):
-    """异步es客户端"""
+class AsyncConnection(Connections):
+    """异步elasticsearch-dsl连接模块
 
-    def __init__(
-        self,
-        hosts: TYPE_HOST,
-        transport_class: Transport,
-        **kwargs
-    ) -> None:
-        super().__init__(
-            hosts=hosts,
-            transport_class=transport_class,
-            **kwargs
-        )
+    Args:
+        Connections (obj): elasticsearch-dsl连接模块
+    """
 
-    async def _async_call(
-        self,
-        method: str,
-        url: str,
-        params: typing.Any = None,
-        body: typing.Any = None,
-        headers: typing.Any = None,
-        **kwargs
-    ) -> typing.Any:
-        async with aiohttp.ClientSession() as session:
-            try:
-                async with session.request(
-                    method=method,
-                    url=url,
-                    params=params,
-                    json=body,
-                    headers=headers,
-                    **kwargs
-                ) as response:
-                    response.raise_for_status()
-                    return await response.json()
-            except aiohttp.ClientError as error:
-                raise ElasticsearchException(str(error))
+    def __init__(self):
+        super().__init__()
+        self.session = None
+        self.connection = None
 
-    async def perform_request(self, method: str, path: str, *, params: Mapping[str, Any] | None = None, headers: Mapping[str, str] | None = None, body: Any | None = None) -> Coroutine[Any, Any, ApiResponse[Any]]:
-        return await self._async_call(method, path, params=params, headers=headers, body=body)
+    async def create_async_connection(self, alias="default", **kwargs):
+        """创建异步连接方法
+
+        Args:
+            alias (str, optional): 连接别名. Defaults to "default".
+
+        Returns:
+            AsyncElasticsearch: 异步es连接实例
+        """
+        kwargs.setdefault("serializer", serializer)
+        conn = self._conns[alias] = AsyncElasticsearch(**kwargs)
+        return conn
+
+    async def get_async_connection(self, alias="default"):
+        """获取异步es连接方法
+
+        Args:
+            alias (str, optional): 连接别名. Defaults to "default".
+
+        Raises:
+            KeyError: 连接未找到
+
+        Returns:
+            AsyncElasticsearch: AsyncElasticsearch实例
+        """
+        if not isinstance(alias, string_types):
+            return alias
+
+        with contextlib.suppress(KeyError):
+            return self._conns[alias]
+        try:
+            return await self.create_async_connection(alias, **self._kwargs[alias])
+        except KeyError as e:
+            raise KeyError(f"There is no connection with alias {alias}.") from e
+
+# TODO: 添加orm 模型注册方法
 
 
-# TODO: 添加fastapi特化连接
+connections = AsyncConnection()
+configure = connections.configure
+add_connection = connections.add_connection
+remove_connection = connections.remove_connection
+create_connection = connections.create_connection
+get_connection = connections.get_connection
+create_async_connection = connections.create_async_connection
+get_async_connection = connections.get_async_connection
